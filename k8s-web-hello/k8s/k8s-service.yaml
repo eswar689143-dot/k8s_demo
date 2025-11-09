@@ -4,7 +4,7 @@ metadata:
   name: k8s-web-hello-service
 spec:
   selector:
-    app: k8s-web-hello
+    app: k8s-web-hello-app
   ports:
     - protocol: TCP
       port: 8080
