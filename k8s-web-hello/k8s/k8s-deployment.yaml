@@ -15,7 +15,7 @@ spec:
         app: k8s-web-hello-app
     spec:
       containers:
-        - name: k8s-web-hello-container
+        - name: k8s-web-hello-app
           image: eswarkondababu/k8s-web-hello
           ports:
             - containerPort: 3000
