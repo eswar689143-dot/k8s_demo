@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.mjs",
-    "build": "echo 'no build'"
+    "start": "node src/index.mjs",
+    "build": "echo 'no build'",
+    "test": "echo \"no tests configured\""
   },
 
   "keywords": [],
