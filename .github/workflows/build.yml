@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          #cache: 'npm'   # Speeds up builds
+          cache: 'npm'   # Speeds up builds
 
       # Step 3: Install dependencies
       - name: Install dependencies
