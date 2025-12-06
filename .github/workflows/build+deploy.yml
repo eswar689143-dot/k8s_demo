@@ -1,0 +1,85 @@
+name: Full CI/CD Pipeline - DockerHub + Minikube
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: self-hosted   # Windows Runner
+
+    steps:
+      # -------------------------
+      # Step 1: Checkout Code
+      # -------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Step 2: Login to DockerHub
+      # -------------------------
+      - name: Login to DockerHub
+        shell: powershell
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      # -------------------------
+      # Step 3: Build Docker Image
+      # -------------------------
+      - name: Build Docker Image
+        shell: powershell
+        run: |
+          docker build -t "${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest" .
+
+      # -------------------------
+      # Step 4: Push Image to DockerHub
+      # -------------------------
+      - name: Push Image
+        shell: powershell
+        run: |
+          docker push "${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
+
+      # -------------------------
+      # Step 5: Configure kubeconfig for Windows Runner
+      # -------------------------
+      - name: Setup kubeconfig
+        shell: powershell
+        run: |
+          $env:KUBECONFIG = "C:\actions-runner\.kube\config"
+          kubectl config use-context minikube
+
+      # -------------------------
+      # Step 6: Update Deployment Image
+      # -------------------------
+      - name: Update Deployment Image
+        shell: powershell
+        run: |
+          kubectl set image deployment/myapp-deployment myapp="${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest" --record
+
+      # -------------------------
+      # Step 7: Apply YAMLs (if needed)
+      # -------------------------
+      - name: Apply Kubernetes Manifests
+        shell: powershell
+        run: |
+          kubectl apply -f k8s-deployment.yaml
+          kubectl apply -f k8s-service.yaml
+
+      # -------------------------
+      # Step 8: Wait for Rollout
+      # -------------------------
+      - name: Wait for Deployment to complete
+        shell: powershell
+        run: |
+          kubectl rollout status deployment/myapp-deployment
+
+      # -------------------------
+      # Step 9: Show Status
+      # -------------------------
+      - name: Show Pods & Services
+        shell: powershell
+        run: |
+          kubectl get pods -o wide
+          kubectl get svc -o wide
