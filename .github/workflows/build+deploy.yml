@@ -42,6 +42,17 @@ jobs:
         run: |
           docker push "${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
 
+      # step 5: Check minikube is running ot not
+
+      - name: Ensure Minikube is running
+        shell: powershell
+        run: |
+            minikube status
+            if ($LASTEXITCODE -ne 0) {
+            echo "Starting Minikube..."
+            minikube start --driver=docker
+            }
+
       # -------------------------
       # Step 5: Configure kubeconfig for Windows Runner
       # -------------------------
@@ -57,7 +68,7 @@ jobs:
       - name: Update Deployment Image
         shell: powershell
         run: |
-          kubectl set image deployment/myapp-deployment myapp="${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest" --record
+          kubectl set image deployment/myapp-deployment myapp="${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
 
       # -------------------------
       # Step 7: Apply YAMLs (if needed)
