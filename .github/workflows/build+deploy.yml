@@ -65,19 +65,21 @@ jobs:
       # -------------------------
       # Step 6: Update Deployment Image
       # -------------------------
-      - name: Update Deployment Image
-        shell: powershell
-        run: |
-          kubectl set image deployment/myapp-deployment myapp="${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
-
-      # -------------------------
-      # Step 7: Apply YAMLs (if needed)
-      # -------------------------
       - name: Apply Kubernetes Manifests
         shell: powershell
         run: |
           kubectl apply -f k8s-deployment.yaml
           kubectl apply -f k8s-service.yaml
+          
+
+      # -------------------------
+      # Step 7: Apply YAMLs (if needed)
+      # -------------------------
+      - name: Update Deployment Image
+        shell: powershell
+        run: |
+          kubectl set image deployment/myapp-deployment myapp="${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
+
 
       # -------------------------
       # Step 8: Wait for Rollout
