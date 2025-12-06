@@ -23,7 +23,8 @@ jobs:
       - name: Login to DockerHub
         shell: powershell
         run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
 
       # -------------------------
       # Step 3: Build Docker Image
