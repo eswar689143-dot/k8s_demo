@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: k8s-web-hello-app
-          image: eswarkondababu/myapp:latest
+          image: eswarkondababu/myapp:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
