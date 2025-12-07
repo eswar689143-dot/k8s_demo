@@ -78,7 +78,7 @@ jobs:
       - name: Update Deployment Image
         shell: powershell
         run: |
-          kubectl set image deployment/k8s-web-hello-deployment k8s-web-hello-app="***/myapp:latest"
+          kubectl set image deployment/nodejs-demo-deployment k8s-web-hello-app="***/myapp:latest"
 
 
       # -------------------------
@@ -87,7 +87,7 @@ jobs:
       - name: Wait for Deployment to complete
         shell: powershell
         run: |
-          kubectl rollout status deployment/k8s-web-hello-deployment
+          kubectl rollout status deployment/nodejs-demo-deployment
 
       # -------------------------
       # Step 9: Show Status
