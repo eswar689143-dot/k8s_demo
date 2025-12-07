@@ -78,7 +78,7 @@ jobs:
       - name: Update Deployment Image
         shell: powershell
         run: |
-          kubectl set image deployment/k8s-web-hello-deployment k8s-web-hello-app="***/myapp:latest"
+          kubectl set image deployment/k8s-web-hello-deployment k8s-web-hello-app="***/k8s-web-hello:latest"
 
 
       # -------------------------
