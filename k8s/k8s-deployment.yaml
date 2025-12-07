@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: k8s-web-hello-deployment
+  name: nodejs-demo-deployment
   labels:
     app: k8s-web-hello-app
 spec:
